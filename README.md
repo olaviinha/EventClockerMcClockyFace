@@ -90,3 +90,15 @@ The first detail is the event time. It should always have both day and time of d
 - value _daily_ if the event occurs every day.
 
 Event color can be specified in any CSS-accepted format (hex, rgb, rgba, etc.). If you don't want to specify a color, always input a hyphen instead.
+
+#### #protip: Host events.txt in [Dropbox](https://www.dropbox.com) for easy updating.
+
+1. Place `events.txt` somewhere in your Dropbox.
+2. Right-click it and select _Copy Dropbox Link_.
+3. Edit `clocker.js` and locate line 3 `var events_txt = 'events.txt';`.
+4. Replace `events.txt` with the Dropbox Link from your clipboard and save.
+
+End result should look something like this:
+```
+var events_txt = 'https://www.dropbox.com/s/b666pwrytk1pepm/events.txt?dl=0';
+```
