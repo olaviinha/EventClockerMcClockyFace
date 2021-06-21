@@ -9,13 +9,16 @@ It is probably best suited for daily or weekly reoccurring events, but can also 
 I.e. it takes your data like this:
 ```
 # Event time             Color   Description
-daily 11:00-11:30;       #393;   Daily morning meeting
-daily 11:30-12:00;       #993;   Lunch
-mon-fri 10:00-18:20;     #933;   Helsinki stock exchange open
-mon-fri 16:30-00:00;     -;      NYSE open
-mon 18:00-19:00;         #99f;   Monday sauna
-2021-06-23 20:00-21:00;  -;      Some one-time event
-2021-06-24 13:00-14:00;  -;      Doctor
+daily 13:00-14:00;       #993;   Lunch
+mon-fri 10:00-18:20;     #393;   Helsinki stock exchange is open
+mon-fri 16:30-00:00;     -;      NYSE is open
+tue-wed 14:00-18:00;     #99f;   Täysistunto
+thu 16:00-20:00;         #99f;   Täysistunto
+fri 13:00-17:00;         #99f;   Täysistunto
+mon 18:00-19:00;         white;  Monday sauna
+2020-08-22 18:30-20:00   yellow; Ruusut @ Allas
+2020-09-04 20:00-22:00   yellow; The Hearing @ G Livelab
+2020-11-23 19:00-23:00   yellow; Igorrr @ Tavastia
 ``` 
 
 ...and turns it into this:
