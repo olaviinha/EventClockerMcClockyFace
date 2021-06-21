@@ -1,6 +1,6 @@
 # EventClocker McClockyFace 500 Turbo Deluxe
 
-EventClocker McClockyFace 500 Turbo Deluxe is a web widget for an analogue clock that displays today's events from a delimiter-separated txt fle as arcs in the clockface. It can also display a list of upcoming and ongoing events.
+EventClocker McClockyFace 500 Turbo Deluxe is a web widget for an analogue clock that displays today's events from a delimiter-separated txt file as arcs in the clockface. It can also display a list of upcoming and ongoing events.
 
 Live demo: https://inha.asia/dmo/clocker/
 
@@ -46,7 +46,7 @@ mon 18:00-19:00;         white;  Monday sauna
   <script src="clocker.js"></script>
 ```
 
-3. Place EventClocker McClockyFace 500 Turbo Deluxe somewhere on your website.
+3. Place EventClocker McClockyFace 500 Turbo Deluxe somewhere in your website.
 ```
   <div class="clocker"></div>
 ``` 
