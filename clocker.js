@@ -14,8 +14,8 @@ var show_upcoming_before = 1500;                // Show upcoming event this many
 
 var default_color = 'rgba(255, 255, 255, .5)';  // Default color of events on clocker (arcs, lines, etc).
 var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded & events on clockface updated.
-var distance = .7;                              // Max distance of event from clock center. For aesthetics.
-
+var distance = .9;                              // Max distance of event from clock center. For aesthetics.
+var separation = .07;                           // Radial distance between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
 // ---------------------------------------------------------------------------------------------------------
 
 const analog_template = `
@@ -106,7 +106,7 @@ function updateAnalog(el, timestamps) {
 function addEvent(el, start, end, description, color, event_index=0, type=event_type) {
   var e_distance = distance;
   var center = $(el).width() / 2;
-  var radius = type=='pie' ? center * e_distance : center * e_distance - center * .07 * event_index;
+  var radius = type=='pie' ? center * e_distance : center * e_distance - center * separation * event_index;
 
   var start_hour = Number(start.split(':')[0]);
   var start_mins = Number(start.split(':')[1]);
@@ -265,7 +265,9 @@ function initClocker(el, type='analog') {
 }
 
 $(document).ready(function(){
-  initClocker(clock_container);
+  setTimeout(() => {
+    initClocker(clock_container);
+  }, 300);
   var refresh = setInterval(() => {
     initClocker(clock_container);
   }, refresh_interval);
