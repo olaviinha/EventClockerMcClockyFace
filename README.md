@@ -2,6 +2,8 @@
 
 EventClocker McClockyFace Deluxe is a web widget for an analogue clock that displays today's events from a delimiter-separated txt fle as arcs in the clockface. It can also display a list of upcoming and ongoing events.
 
+Live demo: https://inha.asia/dmo/clocker/
+
 It is probably best suited for daily or weekly reoccurring events, but can also be used with dates.
 
 I.e. it takes your data like this:
