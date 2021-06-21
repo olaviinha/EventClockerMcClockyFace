@@ -23,7 +23,7 @@ mon 18:00-19:00;         white;  Monday sauna
 
 ...and turns it into this:
 
-![Black McClockyFace](https://user-images.githubusercontent.com/50331907/122750958-d62b7900-d297-11eb-9ce5-4b2977737e46.png)
+![Black McClockyFace](https://user-images.githubusercontent.com/50331907/122751984-193a1c00-d299-11eb-8657-26f9a3355378.png)
 
 ...or perhaps into something like this:
 ![White McClockyFace](https://storage.googleapis.com/olaviinha/github/clocker/white.jpg)
