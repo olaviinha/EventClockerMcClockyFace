@@ -92,7 +92,7 @@ The first detail is the event time. It should always have both day and time of d
 - shortened weekday names, e.g. _mon_, _fri-sat_
 - value _daily_ if the event occurs every day.
 
-Event color can be specified in any CSS-accepted format (hex, rgb, rgba, etc.). If you don't want to specify a color, always input a hyphen instead.
+Event color can be specified in any CSS-accepted format (color name (_red, blue_ etc.), hex, rgb, rgba, etc.). If you don't want to specify a color, always input a hyphen instead.
 
 #### #protip: Host events.txt in [Dropbox](https://www.dropbox.com) for easy updating.
 
