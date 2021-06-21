@@ -73,6 +73,7 @@ var event_type = 'arcs';                        // 'lines', 'arcs' or 'both'. 'p
 var start_lines_only = true;                    // When 'lines' or 'both' are displayed, display lines only for start times.
 var events_txt = 'events.txt';                  // File containing your events in semicolon-separated format.
 var clock_container = '.clocker';               // Element in which to place EventClocker McClockyFace itself.
+var hide_past_events = true;                    // Hide event from clockface when event has ended.
 
 var display_descriptions = true;                // Display ongoing & upcoming events.
 var hide_wrappers_when_empty = true;            // Hide wrappers when empty. Wrappers may contain titles and other content.
