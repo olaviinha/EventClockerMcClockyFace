@@ -13,7 +13,7 @@ var show_upcoming_before = 60;                  // Show upcoming events this man
 
 var default_color = 'rgba(255, 255, 255, .5)';  // Default color of events on clocker (arcs, lines, etc).
 var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded.
-var distance = .6;                              // Max distance of event from clock center. For aesthetics.
+var distance = .7;                              // Max distance of event from clock center. For aesthetics.
 
 // ---------------------------------------------------------------------------------------------------------
 
@@ -39,6 +39,10 @@ var clock_updater;
 var ongoing_minute = -1;
 refresh_interval = refresh_interval * 1000 * 60;
 show_upcoming_before = (show_upcoming_before + 1) * 1000 * 60;
+
+if(events_txt.indexOf('www.dropbox.com') > -1){
+  events_txt = events_txt.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('dl=0', 'raw=1').replace('dl=1', 'raw=1');
+}
 
 function updateAnalog(el, timestamps) {
   const now = new Date();
