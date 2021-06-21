@@ -11,7 +11,7 @@ I.e. it takes your data like this:
 # Day & Time             Color   Description
 daily 13:00-14:00;       #993;   Lunch
 mon-fri 10:00-18:20;     #393;   Helsinki stock exchange is open
-mon-fri 16:30-00:00;     -;      NYSE is open
+mon-fri 16:30-24:00;     -;      NYSE is open
 tue-wed 14:00-18:00;     #99f;   Eduskunnan täysistunto
 thu 16:00-20:00;         #99f;   Eduskunnan täysistunto
 fri 13:00-17:00;         #99f;   Eduskunnan täysistunto
