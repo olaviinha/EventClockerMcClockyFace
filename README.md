@@ -16,9 +16,9 @@ tue-wed 14:00-18:00;     #99f;   Eduskunnan täysistunto
 thu 16:00-20:00;         #99f;   Eduskunnan täysistunto
 fri 13:00-17:00;         #99f;   Eduskunnan täysistunto
 mon 18:00-19:00;         white;  Monday sauna
-2020-08-22 18:30-20:00;  yellow; Ruusut @ Allas
-2020-09-04 20:00-22:00;  yellow; The Hearing @ G Livelab
-2020-11-23 19:00-23:00;  yellow; Igorrr @ Tavastia
+2021-08-22 18:30-20:00;  yellow; Ruusut @ Allas
+2021-09-04 20:00-22:00;  yellow; The Hearing @ G Livelab
+2021-11-23 19:00-23:00;  yellow; Igorrr @ Tavastia
 ``` 
 
 ...and turns it into this:
