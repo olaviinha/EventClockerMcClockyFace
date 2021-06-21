@@ -2,8 +2,9 @@ var event_type = 'arcs';                        // 'lines', 'arcs' or 'both'. 'p
 var start_lines_only = true;                    // When 'lines' or 'both' are displayed, display lines only for start times.
 var events_txt = 'events.txt';                  // File containing your events in semicolon-separated format.
 var clock_container = '.clocker';               // Element in which to place EventClocker McClockyFace itself.
+var hide_past_events = true;                    // Hide event from clockface when event has ended.
 
-var display_descriptions = true;                // Display ongoing & upcoming events.
+var display_descriptions = true;                // Display lists of ongoing & upcoming events.
 var hide_wrappers_when_empty = true;            // Hide wrappers when empty. Wrappers may contain titles and other content.
 var ongoing_wrapper = '.ongoings.wrapper';      // Wrapper for ongoing events (parent of ongoing_container).
 var upcoming_wrapper = '.upcomings.wrapper';    // Wrapper for upcoming events (parent of upcoming_container).
@@ -12,7 +13,7 @@ var upcoming_container = '.upcoming.events';    // Element in which to list desc
 var show_upcoming_before = 1500;                // Show upcoming event this many minutes before it starts. 1500 = list all today's events. 
 
 var default_color = 'rgba(255, 255, 255, .5)';  // Default color of events on clocker (arcs, lines, etc).
-var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded.
+var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded & events on clockface updated.
 var distance = .7;                              // Max distance of event from clock center. For aesthetics.
 
 // ---------------------------------------------------------------------------------------------------------
@@ -223,11 +224,15 @@ function initClocker(el, type='analog') {
             if(event_days.includes(today_name)) event.date = today;
           }
 
-          if(event.date == today) {
-            addEvent(el, event.start, event.end, event.description, event.color, event_index);
-            const nix_start = +new Date(today+' '+event.start+':00');
-            const nix_end = +new Date(today+' '+event.end+':00');
+          const nix_today = +new Date();
+          const nix_start = +new Date(today+' '+event.start+':00');
+          const nix_end = +new Date(today+' '+event.end+':00');
+
+          let pass = hide_past_events ? nix_end > nix_today : true ;
+
+          if(event.date == today && pass) {
             timestamps.push([event_index, event, nix_start, nix_end]);
+            addEvent(el, event.start, event.end, event.description, event.color, event_index);
             event_index++;
           }
 
