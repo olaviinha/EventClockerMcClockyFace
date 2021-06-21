@@ -36,7 +36,7 @@ mon 18:00-19:00;         white;  Monday sauna
 ### Setup
 
 1. Place all files on a server.
-2. Import required files to your website. Naturally you may compile the LESS file into a CSS file, or do your own styling.
+2. Include required files to your website. Naturally you may compile the LESS file into a CSS file, or do your own styling.
 ```
   <link rel="stylesheet/less" type="text/css" href="clocker.less" />
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
