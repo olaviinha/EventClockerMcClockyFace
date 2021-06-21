@@ -38,6 +38,9 @@ const analog_template = `
 
 var clock_updater;
 var ongoing_minute = -1;
+var ongoing_len = 0;
+var upcoming_len = 0;
+
 refresh_interval = refresh_interval * 1000 * 60;
 show_upcoming_before = (show_upcoming_before + 1) * 1000 * 60;
 
@@ -89,8 +92,15 @@ function updateAnalog(el, timestamps) {
       $(upcoming_container).find('.event-description').length ? $(upcoming_wrapper).show() : $(upcoming_wrapper).hide();
       $(ongoing_container).find('.event-description').length ? $(ongoing_wrapper).show() : $(ongoing_wrapper).hide();
     }
+
+    // Recreate clockface if events changed.
+    if(hide_past_events && ($(upcoming_container).find('.event-description').length != upcoming_len || $(ongoing_container).find('.event-description').length || ongoing_len)) {
+      initClocker(clock_container);
+    }
   }
   ongoing_minute = mins;
+  upcoming_len = $(upcoming_container).find('.event-description').length;
+  ongoing_len = $(ongoing_container).find('.event-description').length;
 }
 
 function addEvent(el, start, end, description, color, event_index=0, type=event_type) {
