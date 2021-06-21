@@ -106,7 +106,7 @@ function updateAnalog(el, timestamps) {
 function addEvent(el, start, end, description, color, event_index=0, type=event_type) {
   var e_distance = distance;
   var center = $(el).width() / 2;
-  var radius = type=='pie' ? center * e_distance : center * e_distance - center * .1 * event_index;
+  var radius = type=='pie' ? center * e_distance : center * e_distance - center * .07 * event_index;
 
   var start_hour = Number(start.split(':')[0]);
   var start_mins = Number(start.split(':')[1]);
