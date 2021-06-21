@@ -6,6 +6,7 @@ It is probably best suited for daily or weekly reoccurring events, but can also 
 
 I.e. it takes your data like this:
 ```
+# Event time             Color   Description
 daily 11:00-11:30;       #393;   Daily morning meeting
 daily 11:30-12:00;       #993;   Lunch
 mon-fri 10:00-18:20;     #933;   Helsinki stock exchange open
