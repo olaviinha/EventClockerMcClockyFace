@@ -86,6 +86,7 @@ var show_upcoming_before = 1500;                // Show upcoming event this many
 var default_color = 'rgba(255, 255, 255, .5)';  // Default color of events on clocker (arcs, lines, etc).
 var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded.
 var distance = .7;                              // Max distance of event from clock center. For aesthetics.
+var separation = .07;                           // Radial distance between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
 ``` 
 
 ### Events Data
