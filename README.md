@@ -80,3 +80,13 @@ var default_color = 'rgba(255, 255, 255, .5)';  // Default color of events on cl
 var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded.
 var distance = .6;                              // Max distance of event from clock center. For aesthetics.
 ``` 
+
+### Events Data
+
+In your events txt file, events should be separated by line-breaks, and event details by semicolon (;) as shown in the examples.
+The first detail is the event time. It should always have both day and time of day separated by whitespace. For the day, you can use 
+- a date, e.g. _2021-06-21_
+- shortened weekday names, e.g. _mon_, _fri-sat_
+- value _daily_ if the event occurs every day.
+
+Event color can be specified in any CSS-accepted format (hex, rgb, rgba, etc.). If you don't want to specify a color, always input a hyphen instead.
