@@ -4,7 +4,7 @@ EventClocker McClockyFace 500 Turbo Deluxe is a web widget for an analogue clock
 
 Live demo: https://inha.asia/dmo/clocker/
 
-It is probably best suited for daily or weekly recurring events, but can also be used with dates.
+Due to the maintainability, it is probably best suited for daily or weekly recurring events, but can also be used with one time events using dates.
 
 I.e. it takes your data like this:
 ```
