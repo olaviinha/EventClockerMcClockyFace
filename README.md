@@ -1,4 +1,4 @@
-# EventClocker McClockyFace Deluxe
+# EventClocker McClockyFace 500 Turbo Deluxe
 
 EventClocker McClockyFace Deluxe is a web widget for an analogue clock that displays today's events from a delimiter-separated txt fle as arcs in the clockface. It can also display a list of upcoming and ongoing events.
 
