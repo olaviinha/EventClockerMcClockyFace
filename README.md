@@ -57,7 +57,8 @@ mon 18:00-19:00;         #99f;   Monday sauna
     <div class="ongoing events"></div>
   </div>
 ```
-5. Done.
+5. Replace events in `events.txt` with your own. You may also [host events.txt in Dropbox](#protip-host-eventstxt-in-dropbox-for-easy-updating) for easy updating.
+6. Done.
 
 ### Settings
 
