@@ -10,7 +10,7 @@ daily 11:00-11:30;       #393;   Daily morning meeting
 daily 11:30-12:00;       #993;   Lunch
 mon-fri 10:00-18:20;     #933;   Helsinki stock exchange open
 mon-fri 16:30-00:00;     -;      NYSE open
-mon 18:00-19:00;         #99f;   Sunday sauna
+mon 18:00-19:00;         #99f;   Monday sauna
 2021-06-23 20:00-21:00;  -;      Some one-time event
 2021-06-24 13:00-14:00;  -;      Doctor
 ``` 
