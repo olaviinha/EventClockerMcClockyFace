@@ -3,13 +3,13 @@ var start_lines_only = true;                    // When 'lines' or 'both' are di
 var events_txt = 'events.txt';                  // File containing your events in semicolon-separated format.
 var clock_container = '.clocker';               // Element in which to place EventClocker McClockyFace itself.
 
-var display_descriptions = true;                // Display ongoing events.
+var display_descriptions = true;                // Display ongoing & upcoming events.
 var hide_wrappers_when_empty = true;            // Hide wrappers when empty. Wrappers may contain titles and other content.
 var ongoing_wrapper = '.ongoings.wrapper';      // Wrapper for ongoing events (parent of ongoing_container).
 var upcoming_wrapper = '.upcomings.wrapper';    // Wrapper for upcoming events (parent of upcoming_container).
 var ongoing_container = '.ongoing.events';      // Element in which to list descriptions of ongoing events.
 var upcoming_container = '.upcoming.events';    // Element in which to list descriptions of upcoming events.
-var show_upcoming_before = 60;                  // Show upcoming events this many minutes before it start. 1500 = list all today's events. 
+var show_upcoming_before = 1500;                // Show upcoming event this many minutes before it starts. 1500 = list all today's events. 
 
 var default_color = 'rgba(255, 255, 255, .5)';  // Default color of events on clocker (arcs, lines, etc).
 var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded.
