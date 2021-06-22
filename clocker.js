@@ -17,7 +17,7 @@ var show_upcoming_before = 1500;                // Show upcoming event this many
 var default_color = 'rgba(1255,255,255,.5)';    // Default color of events on clocker (arcs, lines, etc).
 var distance = .6;                              // Max distance of event from clock center. For aesthetics.
 var separation = .1;                            // Radial distance between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
-var width = .02;                                // Radial width
+var width = .02;                                // Radial width of arcs.
 // ---------------------------------------------------------------------------------------------------------
 
 const analog_template = `
