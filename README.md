@@ -25,7 +25,7 @@ mon 18:00-19:00;         white;  Monday sauna
 ![image](https://user-images.githubusercontent.com/50331907/122831444-9180fb80-d2f2-11eb-8cd2-e86cf0df2675.png)
 
 ...or maybe like this:
-![image](https://user-images.githubusercontent.com/50331907/122826755-30eec000-d2ec-11eb-991f-f7b00a38f3dd.png)
+![image](https://user-images.githubusercontent.com/50331907/122894059-8dcf9200-d34f-11eb-85fb-c6929da4c057.png)
 
 ...perhaps something like that:
 ![image](https://user-images.githubusercontent.com/50331907/122826546-f4bb5f80-d2eb-11eb-8ce8-ff0504527239.png)
