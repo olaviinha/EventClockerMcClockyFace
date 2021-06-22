@@ -24,11 +24,10 @@ mon 18:00-19:00;         white;  Monday sauna
 ...and turns it into something like this:
 ![image](https://user-images.githubusercontent.com/50331907/122831444-9180fb80-d2f2-11eb-8cd2-e86cf0df2675.png)
 
-...or maybe like this:
+...or perhaps something like these:
 ![image](https://user-images.githubusercontent.com/50331907/122894059-8dcf9200-d34f-11eb-85fb-c6929da4c057.png)
-
-...perhaps something like that:
 ![image](https://user-images.githubusercontent.com/50331907/122826546-f4bb5f80-d2eb-11eb-8ce8-ff0504527239.png)
+![image](https://user-images.githubusercontent.com/50331907/122894683-15b59c00-d350-11eb-9bce-f1998963b186.png)
 
 ---
 
