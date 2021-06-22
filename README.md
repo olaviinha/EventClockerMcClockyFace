@@ -74,9 +74,10 @@ var event_type = 'arcs';                        // 'lines', 'arcs' or 'both'. 'p
 var start_lines_only = true;                    // When 'lines' or 'both' are displayed, display lines only for start times.
 var events_txt = 'events.txt';                  // File containing your events in semicolon-separated format.
 var clock_container = '.clocker';               // Element in which to place EventClocker McClockyFace itself.
-var hide_past_events = true;                    // Hide event from clockface when event has ended.
+var hide_past_events = false;                   // Hide event from clockface when event has ended.
+var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded & events on clockface updated.
 
-var display_descriptions = true;                // Display ongoing & upcoming events.
+var display_descriptions = true;                // Display lists of ongoing & upcoming events.
 var hide_wrappers_when_empty = true;            // Hide wrappers when empty. Wrappers may contain titles and other content.
 var ongoing_wrapper = '.ongoings.wrapper';      // Wrapper for ongoing events (parent of ongoing_container).
 var upcoming_wrapper = '.upcomings.wrapper';    // Wrapper for upcoming events (parent of upcoming_container).
@@ -84,10 +85,11 @@ var ongoing_container = '.ongoing.events';      // Element in which to list desc
 var upcoming_container = '.upcoming.events';    // Element in which to list descriptions of upcoming events.
 var show_upcoming_before = 1500;                // Show upcoming event this many minutes before it starts. 1500 = list all today's events. 
 
-var default_color = 'rgba(255, 255, 255, .5)';  // Default color of events on clocker (arcs, lines, etc).
-var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded.
-var distance = .7;                              // Max distance of event from clock center. For aesthetics.
-var separation = .07;                           // Radial distance between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
+// Arch settings
+var default_color = 'rgba(1255,255,255,.5)';    // Default color of events on clocker (arcs, lines, etc).
+var distance = .6;                              // Max distance of event from clock center. For aesthetics.
+var separation = .1;                            // Radial distance between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
+var width = .02;                                // Radial width
 ``` 
 
 ### Events Data
