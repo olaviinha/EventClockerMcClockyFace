@@ -1,23 +1,68 @@
-var event_type = 'arcs';                        // 'lines', 'arcs' or 'both'. 'pie' is also available, but it's highly unuseful.
-var start_lines_only = true;                    // When 'lines' or 'both' are displayed, display lines only for start times.
+// General settings
 var events_txt = 'events.txt';                  // File containing your events in semicolon-separated format.
 var clock_container = '.clocker';               // Element in which to place EventClocker McClockyFace itself.
-var hide_past_events = false;                   // Hide event from clockface when event has ended.
-var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded & events on clockface updated.
+var ongoing_wrapper = '.ongoings.wrapper';      // Wrapper element for ongoing events (parent of ongoing_container).
+var upcoming_wrapper = '.upcomings.wrapper';    // Wrapper element for upcoming events (parent of upcoming_container).
+var ongoing_container = '.ongoing.events';      // Element in which to list descriptions of ongoing events. Should be child of ongoing_wrapper.
+var upcoming_container = '.upcoming.events';    // Element in which to list descriptions of upcoming events. Should be child of upcoming_wrapper.
+var refresh_interval = 15;                      // Interval in minutes, in which events_txt is reloaded.
 
+// Settings for events in clockface
+var event_type = 'arcs';                        // 'lines', 'arcs' or 'both'. 'pie' is also available, but it's highly unuseful.
+var start_lines_only = true;                    // When 'lines' or 'both' are displayed, display lines only for start times.
+var hide_past_events = true;                    // Hide event from clockface when event has ended.
+var events_opacity = 1;                         // Opacity of events on clockface
+var randomize_colors = true;                    // Randomize colors daily for events that have no color defined. Colors are not changed during the day. true, false or 'light' (= same as true but lighter colors)
+var default_color = 'rgb(1255,255,255)';        // Default color of events if randomize_colors is false and event has no color defined.
+
+// Styling for arcs (when event_type is either 'arcs' or 'both')
+var distance = .4;                              // Max distance of event from clock center. For aesthetics.
+var separation = .06;                           // Gap (radial distance) between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
+var width = .25;                                // Arc thickness (radial width).
+var rounded = false;                            // Arc ends are entirely rounded. Not suitable for thick arcs, as it adds half of line width as length to start and end.
+
+// Settings for event list (event descriptions outside the clock itself)
 var display_descriptions = true;                // Display lists of ongoing & upcoming events.
 var hide_wrappers_when_empty = true;            // Hide wrappers when empty. Wrappers may contain titles and other content.
-var ongoing_wrapper = '.ongoings.wrapper';      // Wrapper for ongoing events (parent of ongoing_container).
-var upcoming_wrapper = '.upcomings.wrapper';    // Wrapper for upcoming events (parent of upcoming_container).
-var ongoing_container = '.ongoing.events';      // Element in which to list descriptions of ongoing events.
-var upcoming_container = '.upcoming.events';    // Element in which to list descriptions of upcoming events.
-var show_upcoming_before = 1500;                // Show upcoming event this many minutes before it starts. 1500 = list all today's events. 
+var show_upcoming_before = 1500;                // Show upcoming event description this many minutes before it starts. 1500 = list all today's events. 
 
-// Arch settings
-var default_color = 'rgba(1255,255,255,.5)';    // Default color of events on clocker (arcs, lines, etc).
-var distance = .6;                              // Max distance of event from clock center. For aesthetics.
-var separation = .1;                            // Radial distance between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
-var width = .02;                                // Radial width of arcs.
+// Random color lists: list on top is used when randomize_colors=='light, list below when randomize_colors==true
+var random_colors = randomize_colors == 'light' ? [
+  'ivory',
+  'khaki',
+  'lavender',
+  'lavenderblush',
+  'lemonchiffon',
+  'lightblue',
+  'lightcoral',
+  'lightgreen',
+  'lightpink',
+  'lightsalmon',
+  'lightseagreen',
+  'lightskyblue',
+  'mistyrose',
+  'moccasin',
+  'peachpuff'
+] : [
+  'aquamarine',
+  'burlywood',
+  'cadetblue',
+  'darkgoldenrod',
+  'cornflowerblue',
+  'darkkhaki',
+  'darkolivegreen',
+  'darksalmon',
+  'darkseagreen',
+  'deeppink',
+  'firebrick',
+  'forestgreen',
+  'gold',
+  'hotpink',
+  'indianred',
+  'navajowhite',
+  'peachpuff'
+]
+
 // ---------------------------------------------------------------------------------------------------------
 
 const analog_template = `
@@ -38,7 +83,7 @@ const analog_template = `
   </div>
 `;
 
-var clock_updater;
+var clock_updater, today, today_name, this_day, last_hour, colors;
 var ongoing_minute = -1;
 var ongoing_len = 0;
 var upcoming_len = 0;
@@ -97,12 +142,21 @@ function updateAnalog(el, timestamps) {
 
     // Recreate clockface if events changed.
     if(hide_past_events && ($(upcoming_container).find('.event-description').length != upcoming_len || $(ongoing_container).find('.event-description').length || ongoing_len)) {
-      initClocker(clock_container);
+      initClocker(clock_container, false);
     }
+
+    
   }
+
+  if(last_hour == 23 && hour == 0){
+    initClocker(clock_container, true);
+  }
+
   ongoing_minute = mins;
   upcoming_len = $(upcoming_container).find('.event-description').length;
   ongoing_len = $(ongoing_container).find('.event-description').length;
+  last_hour = hour;
+
 }
 
 function addEvent(el, start, end, description, color, event_index=0, type=event_type) {
@@ -134,6 +188,8 @@ function addEvent(el, start, end, description, color, event_index=0, type=event_
     ctx.arc(center, center, radius, start, end);
     ctx.strokeStyle = color=='-' ? default_color : color;
     ctx.lineWidth = type=='pie' ? center * .7 : center * width;
+    ctx.lineCap = rounded ? 'round' : 'butt';
+    ctx.globalAlpha = events_opacity;
     ctx.stroke();
     $(el).find('.events').append(canvas);
   }
@@ -154,22 +210,48 @@ function addEvent(el, start, end, description, color, event_index=0, type=event_
   event_index++;
 }
 
-function parseEvents(data) {
+function shuffle(array) {
+  var currentIndex = array.length,  randomIndex;
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+  return array;
+}
+
+
+function parseEvents(data, day_changed=false) {
+
+  if(day_changed) {
+    colors = [...random_colors];
+    shuffle(colors);
+    colors = [...colors];
+  }
+
   var events = data.split(/\n\s*\n/);
   events = events[0].split('\n').filter(function(line){return line.indexOf('#') != 0});
   eventDetails = [];
+  color_index = 0;
   events.forEach(function(line, i){
     var itm = line.split(';');
+    var color = itm[1].trim();
+    if(randomize_colors && (!color || color == '' || color == '-')) color = colors[color_index];
     if(itm.length > 1){
       var details = {
         date: itm[0].trim().split(' ')[0].trim(),
         start: itm[0].trim().split(' ')[1].split('-')[0].trim(),
         end: itm[0].trim().split(' ')[1].split('-')[1].trim(),
-        color: itm[1].trim(),
+        color: color,
         description: itm[2].trim(),
       }
     }
     eventDetails.push(details);
+    color_index++;
   });
   return eventDetails;
 
@@ -185,35 +267,36 @@ function formatDate(date) {
   return [year, month, day].join('-');
 }
 
-function initClocker(el, type='analog') {
-  const template = type=='digital' ? digi_template : analog_template;
-  $(el).empty().html(template);
+function initClocker(el, day_changed=false) {
+
+  if(clock_updater) clearInterval(clock_updater);
+  const template = analog_template;
   clearInterval(clock_updater);
 
   $.get({
     url: events_txt + '?' + new Date().getTime(),
     async: false,
     success: function(data) {
-
-      const events = parseEvents(data);
-
+      const events = parseEvents(data, day_changed);
       setTimeout(() => {
+        // Empty old clock
+        $(el).empty().html(template);
         // Fix layout
         el_w = $(el).width();
         el_h = $(el).height();
         if(el_h > el_w) $(el).css('height', $(el).width()+'px');
         if(el_h < el_w) $(el).css('width', $(el).height()+'px');
-    
         // Add events
-        let this_day = new Date();
+        this_day = new Date();
+        today_name = this_day.toString().split(' ')[0].toLowerCase();
         let offset = this_day.getTimezoneOffset();
         today = new Date(this_day.getTime() - (offset*60*1000));
         today = today.toISOString().split('T')[0];
-        var today_name = this_day.toString().split(' ')[0].toLowerCase();
         var days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
         days.push(...days);
         let event_index = 0;
         let timestamps = [];
+        let color_index = 0;
         events.forEach((event, index) => {
           if(event.date == 'daily') event.date = today;
           var regexp = /[a-zA-Z]/g;
@@ -237,15 +320,16 @@ function initClocker(el, type='analog') {
           }
 
           const nix_today = +new Date();
-          const nix_start = +new Date(today+' '+event.start+':00');
-          const nix_end = +new Date(today+' '+event.end+':00');
-
+          let nix_start = +new Date(today+' '+event.start+':00');
+          let nix_end = +new Date(today+' '+event.end+':00');
+          if(nix_start > nix_end) nix_end += 8,64e+7;
           let pass = hide_past_events ? nix_end > nix_today : true ;
+          let past_event = nix_end > nix_today;
 
           if(event.date == today && pass) {
             timestamps.push([event_index, event, nix_start, nix_end]);
-            addEvent(el, event.start, event.end, event.description, event.color, event_index);
-            event_index++;
+            addEvent(el, event.start, event.end, event.description, event.color, event_index, event_type);
+            event_index++; color_index++;
           }
 
         });
@@ -254,6 +338,10 @@ function initClocker(el, type='analog') {
           $(ongoing_wrapper).remove();
           $(upcoming_wrapper).remove();
         }
+
+        $(clock_container).unbind().click(function() { 
+          initClocker(this, true); 
+        });
 
         updateAnalog(el, timestamps);
         clock_updater = setInterval(function(){
@@ -268,9 +356,9 @@ function initClocker(el, type='analog') {
 
 $(document).ready(function(){
   setTimeout(() => {
-    initClocker(clock_container);
+    initClocker(clock_container, true);
   }, 300);
   var refresh = setInterval(() => {
-    initClocker(clock_container);
+    initClocker(clock_container, false);
   }, refresh_interval);
 });
