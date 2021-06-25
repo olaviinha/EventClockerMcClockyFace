@@ -22,7 +22,7 @@ mon 18:00-19:00;         white;  Monday sauna
 ``` 
 
 ...and turns it into something like this:
-![image](https://user-images.githubusercontent.com/50331907/122831444-9180fb80-d2f2-11eb-8cd2-e86cf0df2675.png)
+![image](https://user-images.githubusercontent.com/50331907/123425617-068e5280-d5cb-11eb-8f07-5f2a25e77855.png)
 
 ...or perhaps something like these:
 ![image](https://user-images.githubusercontent.com/50331907/122900624-8612ec00-d355-11eb-8bee-fd1b3944cc74.png)
