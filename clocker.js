@@ -10,13 +10,13 @@ var refresh_interval = 15;                      // Interval in minutes, in which
 // Settings for events in clockface
 var event_type = 'arcs';                        // 'lines', 'arcs' or 'both'. 'pie' is also available, but it's highly unuseful.
 var start_lines_only = true;                    // When 'lines' or 'both' are displayed, display lines only for start times.
-var hide_past_events = true;                    // Hide event from clockface when event has ended.
+var hide_past_events = false;                   // Hide event from clockface when event has ended.
 var events_opacity = 1;                         // Opacity of events on clockface
 var randomize_colors = true;                    // Randomize colors daily for events that have no color defined. Colors are not changed during the day. true, false or 'light' (= same as true but lighter colors)
 var default_color = 'rgb(1255,255,255)';        // Default color of events if randomize_colors is false and event has no color defined.
 
 // Styling for arcs (when event_type is either 'arcs' or 'both')
-var distance = .4;                              // Max distance of event from clock center. For aesthetics.
+var distance = .6;                              // Max distance of event from clock center. For aesthetics.
 var separation = .06;                           // Gap (radial distance) between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
 var width = .25;                                // Arc thickness (radial width).
 var rounded = false;                            // Arc ends are entirely rounded. Not suitable for thick arcs, as it adds half of line width as length to start and end.
@@ -323,11 +323,14 @@ function initClocker(el, day_changed=false) {
           let nix_end = +new Date(today+' '+event.end+':00');
           let overnight = nix_end < nix_start;
           let pass = !overnight && hide_past_events ? nix_end > nix_now : true ;
+
+          console.log(event.description, event.color);
+
           if(pass && event.date == today && overnight) {
             nix_end += 8,64e+7;
             timestamps.push([event_index, event, nix_start, nix_end]);
-            addEvent(el, event.start, '24:00', event.description, event.color, event_index, event_type);
-            addEvent(el, '00:00', event.end, event.description, event.color, event_index, event_type);
+            addEvent(el, event.start, '24:01', event.description, event.color, event_index, event_type);
+            addEvent(el, '23:01', event.end, event.description, event.color, event_index, event_type);
             event_index++; color_index++;
           }
           
