@@ -95,7 +95,8 @@ if(events_txt.indexOf('www.dropbox.com') > -1){
   events_txt = events_txt.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('dl=0', 'raw=1').replace('dl=1', 'raw=1');
 }
 
-function updateAnalog(el, timestamps) {
+
+function updateAnalog(el, timestamps, force_render=false) {
   const now = new Date();
   const seconds = now.getSeconds();
   const seconds_degrees = ((seconds / 60) * 360) + 90;
@@ -110,7 +111,7 @@ function updateAnalog(el, timestamps) {
   $(el).find('.hour-hand').css('transform', 'rotate('+hour_degrees+'deg)');
 
   const timestamp = +new Date();
-  if(mins != ongoing_minute){
+  if(mins != ongoing_minute || force_render){
     timestamps.forEach((stamp) => {
       const id = stamp[0];
       const event = stamp[1];
@@ -140,15 +141,16 @@ function updateAnalog(el, timestamps) {
       $(ongoing_container).find('.event-description').length ? $(ongoing_wrapper).show() : $(ongoing_wrapper).hide();
     }
 
-    // Recreate clockface if events changed.
-    if(hide_past_events && ($(upcoming_container).find('.event-description').length != upcoming_len || $(ongoing_container).find('.event-description').length || ongoing_len)) {
+    // Recreate clockface & event list if events changed.
+    if(hide_past_events && ($(upcoming_container).find('.event-description').length != upcoming_len || $(ongoing_container).find('.event-description').length != ongoing_len)) {
+      console.log('x');
       initClocker(clock_container, false);
     }
 
-    
   }
 
   if(last_hour == 23 && hour == 0){
+    console.log('day changed, update');
     initClocker(clock_container, true);
   }
 
@@ -269,6 +271,8 @@ function formatDate(date) {
 
 function initClocker(el, day_changed=false) {
 
+  console.log('init clocker');
+
   if(clock_updater) clearInterval(clock_updater);
   const template = analog_template;
   clearInterval(clock_updater);
@@ -339,11 +343,13 @@ function initClocker(el, day_changed=false) {
           $(upcoming_wrapper).remove();
         }
 
-        $(clock_container).unbind().click(function() { 
-          initClocker(this, true); 
+        console.log('bind click to', el);
+        $(el).unbind().click(function() { 
+          console.log('clicker');
+          initClocker(el, true); 
         });
 
-        updateAnalog(el, timestamps);
+        updateAnalog(el, timestamps, true);
         clock_updater = setInterval(function(){
             updateAnalog(el, timestamps);
         }, 1000);
