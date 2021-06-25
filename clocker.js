@@ -143,14 +143,12 @@ function updateAnalog(el, timestamps, force_render=false) {
 
     // Recreate clockface & event list if events changed.
     if(hide_past_events && ($(upcoming_container).find('.event-description').length != upcoming_len || $(ongoing_container).find('.event-description').length != ongoing_len)) {
-      console.log('x');
       initClocker(clock_container, false);
     }
 
   }
 
   if(last_hour == 23 && hour == 0){
-    console.log('day changed, update');
     initClocker(clock_container, true);
   }
 
@@ -260,19 +258,13 @@ function parseEvents(data, day_changed=false) {
 }
 
 function formatDate(date) {
-  var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-  return [year, month, day].join('-');
+  let offset = date.getTimezoneOffset();
+  date = new Date(date.getTime() - (offset*60*1000));
+  date = date.toISOString().split('T')[0];
+  return date;
 }
 
 function initClocker(el, day_changed=false) {
-
-  console.log('init clocker');
-
   if(clock_updater) clearInterval(clock_updater);
   const template = analog_template;
   clearInterval(clock_updater);
@@ -292,10 +284,13 @@ function initClocker(el, day_changed=false) {
         if(el_h < el_w) $(el).css('width', $(el).height()+'px');
         // Add events
         this_day = new Date();
+        yesterday = new Date();
+        yesterday.setDate(yesterday.getDate()-1);
         today_name = this_day.toString().split(' ')[0].toLowerCase();
-        let offset = this_day.getTimezoneOffset();
-        today = new Date(this_day.getTime() - (offset*60*1000));
-        today = today.toISOString().split('T')[0];
+        yesterday_name = yesterday.toString().split(' ')[0].toLowerCase();
+        today = formatDate(this_day);
+        yesterday = formatDate(yesterday);
+
         var days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
         days.push(...days);
         let event_index = 0;
@@ -323,14 +318,20 @@ function initClocker(el, day_changed=false) {
             if(event_days.includes(today_name)) event.date = today;
           }
 
-          const nix_today = +new Date();
+          const nix_now = +new Date();
           let nix_start = +new Date(today+' '+event.start+':00');
           let nix_end = +new Date(today+' '+event.end+':00');
-          if(nix_start > nix_end) nix_end += 8,64e+7;
-          let pass = hide_past_events ? nix_end > nix_today : true ;
-          let past_event = nix_end > nix_today;
-
-          if(event.date == today && pass) {
+          let overnight = nix_end < nix_start;
+          let pass = !overnight && hide_past_events ? nix_end > nix_now : true ;
+          if(pass && event.date == today && overnight) {
+            nix_end += 8,64e+7;
+            timestamps.push([event_index, event, nix_start, nix_end]);
+            addEvent(el, event.start, '24:00', event.description, event.color, event_index, event_type);
+            addEvent(el, '00:00', event.end, event.description, event.color, event_index, event_type);
+            event_index++; color_index++;
+          }
+          
+          if(pass && event.date == today && !overnight) {
             timestamps.push([event_index, event, nix_start, nix_end]);
             addEvent(el, event.start, event.end, event.description, event.color, event_index, event_type);
             event_index++; color_index++;
@@ -343,9 +344,7 @@ function initClocker(el, day_changed=false) {
           $(upcoming_wrapper).remove();
         }
 
-        console.log('bind click to', el);
         $(el).unbind().click(function() { 
-          console.log('clicker');
           initClocker(el, true); 
         });
 
