@@ -120,7 +120,7 @@ function updateAnalog(el, timestamps, force_render=false) {
       if(display_descriptions){
         // Display upcoming event
         if(!$(upcoming_container).find('.eu'+id).length && timestamp >= start-show_upcoming_before && timestamp < start) {
-          $(upcoming_container).prepend('<div class="event-description eu'+id+'" style="color:'+event.color+'">'+event.description+'</div>');
+          $(upcoming_container).append('<div class="event-description eu'+id+'" style="color:'+event.color+'">'+event.description+'</div>');
         }
         if($(upcoming_container).find('.eu'+id).length && timestamp >= start) {
           $(upcoming_container).find('.eu'+id).remove();
