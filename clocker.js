@@ -17,14 +17,17 @@ var default_color = 'rgb(1255,255,255)';        // Default color of events if ra
 
 // Styling for arcs (when event_type is either 'arcs' or 'both')
 var distance = .6;                              // Max distance of event from clock center. For aesthetics.
-var separation = .06;                           // Gap (radial distance) between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
-var width = .25;                                // Arc thickness (radial width).
+var separation = .12;                           // Gap (radial distance) between arcs. .03 = overlap; .07 = small gap; .1 = large gap.
+var width = .20;                                // Arc thickness (radial width).
 var rounded = false;                            // Arc ends are entirely rounded. Not suitable for thick arcs, as it adds half of line width as length to start and end.
 
 // Settings for event list (event descriptions outside the clock itself)
 var display_descriptions = true;                // Display lists of ongoing & upcoming events.
 var hide_wrappers_when_empty = true;            // Hide wrappers when empty. Wrappers may contain titles and other content.
-var show_upcoming_before = 1500;                // Show upcoming event description this many minutes before it starts. 1500 = list all today's events. 
+var show_upcoming_before = 1500;                // Show upcoming event description this many minutes before it starts. 1500 = list all today's events.
+var show_notification_before = 5;               // Show desktop notification this many minutes before event starts.
+
+Notification.requestPermission();
 
 // Random color lists: list on top is used when randomize_colors=='light, list below when randomize_colors==true
 var random_colors = randomize_colors == 'light' ? [
@@ -89,12 +92,21 @@ var ongoing_len = 0;
 var upcoming_len = 0;
 
 refresh_interval = refresh_interval * 1000 * 60;
-show_upcoming_before = (show_upcoming_before + 1) * 1000 * 60;
+show_upcoming_before = show_upcoming_before * 1000 * 60;
+show_notification_before_disp = String(show_notification_before);
+show_notification_before = show_notification_before * 1000 * 60;
 
 if(events_txt.indexOf('www.dropbox.com') > -1){
   events_txt = events_txt.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('dl=0', 'raw=1').replace('dl=1', 'raw=1');
 }
 
+function notify(event){
+  Notification.requestPermission().then(function (permission) {
+    if (permission === "granted") {
+      var notification = new Notification(event);
+    }
+  });
+}
 
 function updateAnalog(el, timestamps, force_render=false) {
   const now = new Date();
@@ -111,6 +123,7 @@ function updateAnalog(el, timestamps, force_render=false) {
   $(el).find('.hour-hand').css('transform', 'rotate('+hour_degrees+'deg)');
 
   const timestamp = +new Date();
+  
   if(mins != ongoing_minute || force_render){
     timestamps.forEach((stamp) => {
       const id = stamp[0];
@@ -122,12 +135,22 @@ function updateAnalog(el, timestamps, force_render=false) {
         if(!$(upcoming_container).find('.eu'+id).length && timestamp >= start-show_upcoming_before && timestamp < start) {
           $(upcoming_container).append('<div class="event-description eu'+id+'" style="color:'+event.color+'">'+event.description+'</div>');
         }
+
+        // Display desktop notification of upcoming event
+        if(timestamp >= start-show_notification_before && timestamp <= start-show_notification_before+1000) {
+          notify(event.description+' starting in '+show_notification_before_disp+' minutes!');
+        }
+
         if($(upcoming_container).find('.eu'+id).length && timestamp >= start) {
           $(upcoming_container).find('.eu'+id).remove();
         }
         // Display ongoing event
         if(!$(ongoing_container).find('.eo'+id).length && timestamp >= start && timestamp < end) {
           $(ongoing_container).prepend('<div class="event-description eo'+id+'" style="color:'+event.color+'">'+event.description+'</div>');
+          // Display desktop notification
+          if(timestamp >= start && timestamp <= start+1000) {
+            notify(event.description+' starting now!');
+          }
         }
         if($(ongoing_container).find('.eo'+id).length && timestamp < start || timestamp >= end) {
           $(ongoing_container).find('.eo'+id).remove();
@@ -324,7 +347,7 @@ function initClocker(el, day_changed=false) {
           let overnight = nix_end < nix_start;
           let pass = !overnight && hide_past_events ? nix_end > nix_now : true ;
 
-          console.log(event.description, event.color);
+          // console.log(event.description, event.color);
 
           if(pass && event.date == today && overnight) {
             nix_end += 8,64e+7;
