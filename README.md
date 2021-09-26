@@ -98,6 +98,7 @@ var rounded = false;                            // Arc ends are entirely rounded
 var display_descriptions = true;                // Display lists of ongoing & upcoming events.
 var hide_wrappers_when_empty = true;            // Hide wrappers when empty. Wrappers may contain titles and other content.
 var show_upcoming_before = 1500;                // Show upcoming event description this many minutes before it starts. 1500 = list all today's events. 
+var show_notification_before = 5;               // Show desktop notification this many minutes before event starts.
 ``` 
 
 You can click clock to re-randomize colors.
